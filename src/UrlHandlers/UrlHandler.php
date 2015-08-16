@@ -351,7 +351,7 @@ abstract class UrlHandler implements GeneratesResponse
      * @param string $currentUrlFragment
      * @return bool
      */
-    private function matchesRequest(Request $request, $currentUrlFragment = "")
+    protected function matchesRequest(Request $request, $currentUrlFragment = "")
     {
         // Some URL Handlers don't have a url at all in which case we assume they apply
         // before even considering the url.
