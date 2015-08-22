@@ -250,12 +250,12 @@ abstract class UrlHandler implements GeneratesResponse
      * If child handlers are present they are given priority.
      *
      * @param mixed $request
-     * @param bool|string $currentUrlFragment
+     * @param string $currentUrlFragment
      * @return bool|Response
      */
-    public function generateResponse($request = null, $currentUrlFragment = false)
+    public function generateResponse($request = null, $currentUrlFragment = null)
     {
-        if ($currentUrlFragment === false) {
+        if ($currentUrlFragment === null) {
             $currentUrlFragment = $request->UrlPath;
         }
 

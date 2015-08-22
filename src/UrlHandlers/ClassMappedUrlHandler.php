@@ -20,7 +20,7 @@ namespace Rhubarb\Crown\UrlHandlers;
 
 class ClassMappedUrlHandler extends UrlHandler
 {
-    private $className = "";
+    protected $className = "";
 
     public function __construct($className, $children = [])
     {

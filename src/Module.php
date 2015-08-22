@@ -25,6 +25,7 @@ require_once __DIR__ . "/UrlHandlers/UrlHandler.php";
 
 use Rhubarb\Crown\Exceptions\ForceResponseException;
 use Rhubarb\Crown\Exceptions\Handlers\ExceptionHandler;
+use Rhubarb\Crown\Exceptions\NoHandlerForRequestException;
 use Rhubarb\Crown\Exceptions\NonRhubarbException;
 use Rhubarb\Crown\Exceptions\RhubarbException;
 use Rhubarb\Crown\Exceptions\StopGeneratingResponseException;
@@ -364,6 +365,8 @@ abstract class Module
             // If they do return a response we return that and exit the loop.
             // If they return false then we assume they couldn't handle the URL
             // and continue to the next handler.
+            $responseGenerated = false;
+
             foreach ($handlers as $handler) {
                 $generatedResponse = $handler->generateResponse($request);
 
@@ -381,15 +384,25 @@ abstract class Module
                         $response->setContent($generatedResponse);
                     }
 
+                    $responseGenerated = true;
+
                     break;
                 }
             }
+
+            if (!$responseGenerated) {
+                    throw new NoHandlerForRequestException($request);
+                }
         } catch (ForceResponseException $er) {
             $response = $er->getResponse();
             $filterResponse = false;
         } catch (StopGeneratingResponseException $er) {
             $filterResponse = false;
-        } catch (RhubarbException $er) {
+        } catch(NoHandlerForRequestException $er) {
+            $response = ExceptionHandler::processException($er);
+            $filterResponse = false;
+        }
+        catch (RhubarbException $er) {
             $response = ExceptionHandler::processException($er);
         } catch (\Exception $er) {
             $response = ExceptionHandler::processException(new NonRhubarbException($er));
