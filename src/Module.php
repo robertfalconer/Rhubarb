@@ -391,8 +391,8 @@ abstract class Module
             }
 
             if (!$responseGenerated) {
-                    throw new NoHandlerForRequestException($request);
-                }
+                throw new NoHandlerForRequestException($request);
+            }
         } catch (ForceResponseException $er) {
             $response = $er->getResponse();
             $filterResponse = false;
@@ -401,8 +401,7 @@ abstract class Module
         } catch(NoHandlerForRequestException $er) {
             $response = ExceptionHandler::processException($er);
             $filterResponse = false;
-        }
-        catch (RhubarbException $er) {
+        } catch (RhubarbException $er) {
             $response = ExceptionHandler::processException($er);
         } catch (\Exception $er) {
             $response = ExceptionHandler::processException(new NonRhubarbException($er));
