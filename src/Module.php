@@ -400,7 +400,6 @@ abstract class Module
             $filterResponse = false;
         } catch(NoHandlerForRequestException $er) {
             $response = ExceptionHandler::processException($er);
-            $filterResponse = false;
         } catch (RhubarbException $er) {
             $response = ExceptionHandler::processException($er);
         } catch (\Exception $er) {
